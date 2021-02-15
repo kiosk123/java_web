@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="spms.dao.ProjectDao">
+
+	<!--프로젝트 목록을 가져오는 SQL -->
+	<select id="selectList" parameterType="map" resultMap="projectResultMap">
+		SELECT *
+		FROM PROJECTS
+		ORDER BY
+		<choose>
+			<when test="orderCond == 'TITLE_ASC'">PNAME asc</when>
+			<when test="orderCond == 'TITLE_DESC'">PNAME desc</when>
+			<when test="orderCond == 'STARTDATE_ASC'">STA_DATE asc</when>
+			<when test="orderCond == 'STARTDATE_DESC'">STA_DATE desc</when>
+			<when test="orderCond == 'ENDDATE_ASC'">END_DATE asc</when>
+			<when test="orderCond == 'ENDDATE_DESC'">END_DATE desc</when>
+			<when test="orderCond == 'STATE_ASC'">STATE asc</when>
+			<when test="orderCond == 'STATE_DESC'">STATE desc</when>
+			<when test="orderCond == 'PNO_ASC'">PNO asc</when>
+			<otherwise>PNO desc</otherwise>
+		</choose>
+	</select>
+
+	<resultMap type="Project" id="projectResultMap">
+		<id column="pno" property="no" />
+		<result column="content" property="content" />
+		<result column="pname" property="title" />
+		<result column="sta_date" property="startDate" javaType="java.sql.Date" />
+		<result column="end_date" property="endDate" javaType="java.sql.Date" />
+		<result column="cre_date" property="createdDate" javaType="java.sql.Date" />
+		<result column="state" property="state" />
+		<result column="tags" property="tags" />
+	</resultMap>
+
+	<!-- 새로운 프로젝트를 삽입하는 SQL -->
+	<insert id="insert" parameterType="Project">
+		INSERT INTO PROJECTS
+		(PNAME,CONTENT,STA_DATE,END_DATE,STATE,CRE_DATE,TAGS)
+		VALUES(#{title},#{content},#{startDate},#{endDate},0,NOW(),#{tags})
+	</insert>
+
+	<!-- 프로젝트 내용 하나를 가져오는 SQL- projectResultMap을 재활용한다. -->
+	<select id="selectOne" parameterType="int" resultMap="projectResultMap">
+		select *
+		from projects where pno=#{no}
+	</select>
+
+	<!-- 프로젝트 내용을 업데이트하는 SQL -->
+	<update id="update" parameterType="map">
+		UPDATE PROJECTS
+		<set>
+			<if test="title!=null">PNAME=#{title},</if>
+			<if test="content!=null">CONTENT=#{content},</if>
+			<if test="startDate!=null">STA_DATE=#{startDate},</if>
+			<if test="endDate!=null">END_DATE=#{endDate},</if>
+			<if test="state!=null">STATE=#{state},</if>
+			<if test="tags!=null">TAGS=#{tags}</if>
+		</set>
+		WHERE PNO=#{no}
+	</update>
+
+	<!-- 기존 프로젝트를 삭제하는 SQL -->
+	<delete id="delete" parameterType="int">
+		DELETE
+		FROM PROJECTS
+		WHERE
+		PNO=#{no}
+	</delete>
+</mapper>
+

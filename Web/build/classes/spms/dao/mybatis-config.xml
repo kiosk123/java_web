@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<!--마이바티스 설정 하기위해 외부 프로퍼티 파일을 읽어온다. -->
+	<properties resource="spms/dao/db.properties" />
+
+	<!-- 로그설정 -->
+	<settings>
+		<setting name="logImpl" value="LOG4J" />
+	</settings>
+
+	<typeAliases>
+		<typeAlias type="spms.vo.Project" alias="Project" />
+		<typeAlias type="spms.vo.Member" alias="Member" />
+	</typeAliases>
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<property name="driver" value="${driver}" />
+				<property name="url" value="${url}" />
+				<property name="username" value="${username}" />
+				<property name="password" value="${password}" />
+			</dataSource>
+		</environment>
+	</environments>
+	<mappers>
+		<mapper resource="spms/dao/MySqlProjectDao.xml" />
+		<mapper resource="spms/dao/MySqlMemberDao.xml"/>
+	</mappers>
+
+
+</configuration>

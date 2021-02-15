@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<Context path="/MySql" docBase="MySql" reloadable="true">
+    
+    <WatchedResource>WEB-INF/web.xml</WatchedResource>
+      
+    <Resource name="jdbc/board"
+               auth="Container"
+               type="javax.sql.DataSource"
+               driverClassName="com.mysql.jdbc.Driver"
+               url="jdbc:mysql://localhost:3306/board"
+               username="test"
+               password="123123"            
+               maxActive="20"              
+               maxIdle="10"             
+               maxWait="-1"
+    />    
+</Context>
